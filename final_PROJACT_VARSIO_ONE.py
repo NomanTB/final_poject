@@ -12,6 +12,7 @@ class Code:
         self.cena = ''
         self.opisanie = ''
         self.location = ''
+        self.langrig = ''
 
 
     def cod_project(self):
@@ -30,8 +31,15 @@ class Code:
 
         self.zapros = input(Fore.BLACK + Back.GREEN + 'Что ищем на сайте:' + Style.RESET_ALL + ' ')
         # запрашиваем что будем искать
+        self.langrig = input(Fore.BLACK + Back.GREEN + 'Виберете язык:' + Style.RESET_ALL + ' ')
 
-        html = requests.get(f'https://obyava.ua/ua/s-{self.zapros}')
+        if self.langrig == 'ru':
+            html = requests.get(f'https://obyava.ua/ru/s-{self.zapros}')
+        elif self.langrig == 'ua':
+            html = requests.get(f'https://obyava.ua/ua/s-{self.zapros}')
+        else:
+            print(Fore.BLACK + Back.GREEN + 'я вас не понимаю' + Style.RESET_ALL + ' ')
+
         #парсим html код
         soup = BeautifulSoup(html.text, 'lxml')
         # обрабатывает html код
@@ -56,7 +64,7 @@ class Code:
             print(obivlenie,cena,opisanie,location)
 
             #записываем данные в БД
-            cur.execute(f'''INSERT INTO FINAL (obivlenie,cena,opisanie,location) VALUES (\"%s\",\"%s\",\"%s\",\"%s\");''' %(obivlenie,cena,obivlenie,location))
+            cur.execute(f'''INSERT INTO FINAL (obivlenie,cena,opisanie,location) VALUES (\"%s\",\"%s\",\"%s\",\"%s\");''' %(obivlenie,cena,opisanie,location))
             con.commit()
 
 
